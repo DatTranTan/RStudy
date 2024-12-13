@@ -12,20 +12,9 @@ export const Wrapper = styled.div`
     justify-content: center;
   }
 
-  .wrapper-item {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-  }
+ 
 
-  .ant-card-cover {
-    display: flex;
-    padding-top: 1rem;
-  }
-
-  .ant-card-body {
-    text-align: center;
-  }
+  
 
   .wrapper-card{
     margin-top: 1rem;
@@ -33,4 +22,24 @@ export const Wrapper = styled.div`
     justify-content: center;
   }
 
+  
+
 `;
+
+
+export const WrapperItem = styled.div`
+ display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    .ant-card-body {
+    text-align: center;
+    padding:1rem;
+  }
+
+  
+  .ant-card-cover {
+    display: flex;
+    padding-top: 1rem;
+  }
+`

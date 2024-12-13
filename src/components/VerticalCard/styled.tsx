@@ -1,10 +1,15 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-height: 100%;
+  height: 100%;
   .ant-card .ant-card-body {
     padding: 12px;
     flex: auto;
+  }
+  
+  .ant-card-cover {
+    padding: 0.5rem;
+    padding-bottom: 0;
   }
 
   .ant-card {

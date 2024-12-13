@@ -1,27 +1,38 @@
 import {
+  Avatar,
   Button,
   Card,
   Carousel,
   Drawer,
   Form,
   Input,
+  List,
   notification,
+  Select,
   Space,
 } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Api from "../../api";
 import { FolderType, WordType } from "../../types";
 import * as SC from "./styled";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  LikeOutlined,
+  MessageOutlined,
+  SoundOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
 
 import type { FormProps } from "antd";
 import { useSearchParams } from "react-router-dom";
 import { VerticalCard } from "../../components/VerticalCard";
+import { FlipCard } from "../../components/FlipCard";
+import { DrawerSourse } from "../../components/DrawerSourse";
 const { Meta } = Card;
 
 export const Course = () => {
   const [words, setWords] = useState<WordType[] | []>([]);
-  const [open, setOpen] = useState<boolean>(false);
-  // const { pathname, search } = useLocation();
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("id");
 
@@ -33,39 +44,7 @@ export const Course = () => {
     }
   }, [courseId]);
 
-  const onFinish: FormProps<FolderType>["onFinish"] = async (values) => {
-    try {
-      // const { message } = await Api.createFolder(values);
-      await Api.createFolder(values);
-
-      await onClose();
-
-      await notification.success({
-        message: "THÀNH CÔNG",
-        description: "Thành công",
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      getFolders();
-    }
-  };
-
-  const onFinishFailed: FormProps<FolderType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const onOpen = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const getDetailCourse = async () => {
+    const getDetailCourse = async () => {
     try {
       if (courseId) {
         const { data } = await Api.getCourseById(courseId);
@@ -78,70 +57,17 @@ export const Course = () => {
     }
   };
 
-  const getFolders = async () => {
-    try {
-      const { data } = await Api.getFolders();
-      await setWords(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  console.log(words, "333333333");
-
+ 
   return (
     <SC.Wrapper>
-      <Drawer
-        title={`Thêm thư mục`}
-        placement="right"
-        size={"large"}
-        width={"100%"}
-        onClose={onClose}
-        open={open}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="primary" htmlType="submit" form="input-folder">
-              OK
-            </Button>
-          </Space>
-        }
-      >
-        <Form
-          name="input-folder"
-          layout="vertical"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item<FolderType>
-            label="Nhập tên thư mục"
-            name="name"
-            rules={[{ required: true, message: "Không để trống mục này" }]}
-          >
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item<FolderType>
-            label="Nhập chủ đề"
-            name="topic"
-            rules={[{ required: true, message: "Không để trống mục này" }]}
-          >
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item<FolderType> label="Nhập đường dẫn hình ảnh" name="image">
-            <Input size="large" placeholder="https://image.png" />
-          </Form.Item>
-        </Form>
-      </Drawer>
-      <div className="wrapper-action">
-        <Button onClick={onOpen} type="primary">
-          Thêm thư mục
+      {/* <div className="wrapper-action">
+        <Button onClick={()=>setOpenDrawer(true)} type="primary">
+          Thêm từ
         </Button>
-      </div>
+      </div> */}
       <div>
-        <div className="wrapper-item">
-          {["Flashcard", "Learn", "Test"].map((_) => (
+        <SC.WrapperItem>
+          {["Thẻ ghi nhớ", "Học từ", "Kiểm tra", "Ghép thẻ"].map((_) => (
             <div>
               <Card
                 hoverable
@@ -164,9 +90,26 @@ export const Course = () => {
               </Card>
             </div>
           ))}
-        </div>
+        </SC.WrapperItem>
         <div className="wrapper-card">
-          <div style={{ maxWidth: 800, minWidth: 300 }}>
+          {/* {words?.map((word) => {
+                return ( */}
+          <List
+            style={{ background: "#f0f0f0", padding: "1rem", width: "100%" }}
+            itemLayout="vertical"
+            size="small"
+            pagination={{
+              onChange: (page) => {
+                console.log(page);
+              },
+              pageSize: 20,
+            }}
+            dataSource={words}
+            renderItem={(item) => <FlipCard wordDetail={item} />}
+          />
+          {/* );
+              })} */}
+          {/* <div style={{ maxWidth: 800, minWidth: 300 }}>
             <Carousel arrows infinite={false}>
               {words?.map((word) => {
                 return (
@@ -184,7 +127,7 @@ export const Course = () => {
                 );
               })}
             </Carousel>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* {!courseId ? (

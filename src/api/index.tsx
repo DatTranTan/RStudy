@@ -1,7 +1,7 @@
 // api/productApi.js
 
 import axiosClient from "../configs/axios";
-import { FolderType, SignInType, WordType } from "../types";
+import { CourseType, FolderType, SignInType, WordType } from "../types";
 
 const signIn = async (data: SignInType) => {
   const url = `user/login`;
@@ -69,6 +69,12 @@ const getCourseById = async (courseId: string) => {
   return result;
 };
 
+const createCourse = async (data: CourseType) => {
+  const url = `course`;
+  const result = await axiosClient.post(url, { ...data });
+  return result;
+};
+
 const profile = async () => {
   const url = `user/me`;
   const result = await axiosClient.post(url);
@@ -119,7 +125,7 @@ const Api = {
   createWord,
   updateWord,
   deleteWord,
-  getCourseById
+  getCourseById,createCourse
 
   //   signIn: (data: SignInType) => {
   //     const url = `authentication/login`;

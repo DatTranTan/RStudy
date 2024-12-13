@@ -61,6 +61,8 @@ export type CourseType = {
   id?: string;
   name?: string;
   folder?: string;
+  folderId?: string;
   description?: string;
   words?: string[];
+  wordIds?: string[];
 };

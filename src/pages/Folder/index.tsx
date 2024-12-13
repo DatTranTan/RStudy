@@ -9,6 +9,10 @@ import {
   Row,
   Space,
 } from "antd";
+
+import {
+  ArrowLeftOutlined
+} from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import Api from "../../api";
 import { FolderType } from "../../types";
@@ -17,6 +21,7 @@ import * as SC from "./styled";
 import type { FormProps } from "antd";
 import dayjs from "dayjs";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { DrawerSourse } from "../../components/DrawerSourse";
 import { HorizontalCard } from "../../components/HorizontalCard";
 import { ROUTES_PATH } from "../../constants/routers";
 const { Meta } = Card;
@@ -30,10 +35,10 @@ export const Folder = () => {
   const [folder, setFolder] = useState<FolderType | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   // const { pathname, search } = useLocation();
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+
   const [searchParams] = useSearchParams();
   const folderId = searchParams.get("id");
-
-  console.log("folderId", folderId);
 
   useEffect(() => {
     if (folderId) {
@@ -121,6 +126,12 @@ export const Folder = () => {
 
   return (
     <SC.Wrapper>
+      <DrawerSourse
+        openDrawer={openDrawer}
+        setOpenDrawer={setOpenDrawer}
+        getDetailFolder={getDetailFolder}
+      />
+
       <Drawer
         title={`Thêm thư mục`}
         placement="right"
@@ -165,9 +176,24 @@ export const Folder = () => {
         </Form>
       </Drawer>
       <div className="wrapper-action">
-        <Button onClick={onOpen} type="primary">
-          Thêm thư mục
-        </Button>
+        {folderId ? (
+          <>
+            <Button
+              icon={<ArrowLeftOutlined />}
+              style={{ marginRight: "0.5rem" }}
+              onClick={() => {
+                navigate(ROUTES_PATH.FOLDER);
+              }}
+            ></Button>
+            <Button onClick={() => setOpenDrawer(true)} type="primary">
+              Thêm học phần
+            </Button>
+          </>
+        ) : (
+          <Button onClick={onOpen} type="primary">
+            Thêm thư mục
+          </Button>
+        )}
       </div>
       {!folderId ? (
         <div className="mode-card">

@@ -1,11 +1,9 @@
-import { Breadcrumb, Button, Input, Popover } from "antd";
+import { Input, Popover } from "antd";
 import { useEffect } from "react";
-import Api from "../../api";
 import logo from "../../assets/logo.png";
 import {
   setCollapsedSider,
-  setCollections,
-  useContextController,
+  useContextController
 } from "../../context/context";
 import * as SC from "./styled";
 
@@ -13,19 +11,16 @@ import {
   BellOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
-  HomeOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
-import { CollectionsType, DocumentType } from "../../types";
-import { ROUTES_PATH } from "../../constants/routers";
 import { useNavigate } from "react-router-dom";
+import { ROUTES_PATH } from "../../constants/routers";
+import { CollectionsType, DocumentType } from "../../types";
 
 export const Header = () => {
   const { controller, dispatch } = useContextController();
-  const { collections, collapsedSider, documentId } = controller;
+  const { collections, collapsedSider } = controller;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,7 +65,7 @@ export const Header = () => {
       <SC.RightWrapper>
         <div className="right-top">
           <Input
-            size="large"
+            // size="large"
             placeholder="Tìm kiếm"
             className="right-top__input"
           />
@@ -91,7 +86,6 @@ export const Header = () => {
           )}
           <BellOutlined className="icon-style" />
           <UserOutlined className="icon-style" />
-          <Button size="large">Góp ý</Button>
         </div>
         <div className="right-bottom">
           {collections?.map((_) => {

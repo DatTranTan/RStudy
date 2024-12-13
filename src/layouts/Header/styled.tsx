@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import styled from "styled-components";
-import { image, size } from "../../constants/size";
+import { size } from "../../constants/size";
 import {
   borderRadius,
   color,
@@ -37,8 +37,8 @@ export const LeftWrapper = styled.div`
   align-items: center;
 
   .logo {
-    border-radius: ${borderRadius.circle};
-    height: ${size.header}px;
+    border-radius: ${borderRadius.normal};
+    height: ${size.header - 10}px;
     object-fit: cover;
   }
 `;

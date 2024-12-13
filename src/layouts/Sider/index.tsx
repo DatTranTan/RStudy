@@ -1,40 +1,35 @@
+import { DashboardOutlined, FolderOpenOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
-import { size } from "../../constants/size";
-import { setDocumentId, useContextController } from "../../context/context";
-import * as SC from "./styled";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Icon from "@ant-design/icons/lib/components/Icon";
-import icon1 from "../../assets/icon1.png";
-import icon2 from "../../assets/icon2.png";
-import icon3 from "../../assets/icon3.png";
-import { ROUTES_PATH } from "../../constants/routers";
+import { size } from "../../constants/size";
+import { useContextController } from "../../context/context";
+import * as SC from "./styled";
+type MenuItem = Required<MenuProps>['items'][number];
 
 export const Sider = () => {
-  const { controller, dispatch } = useContextController();
-  const { collapsedSider, collections, documentId } = controller;
+  const { controller } = useContextController();
+  const { collapsedSider } = controller;
   const navigate = useNavigate();
 
-  const { pathname, search } = useLocation();
-  const queryParams = new URLSearchParams(search);
-  const [menuItems, setMenuItems] = useState<{ key: string; label: string }[]>(
-    [{
-      key: 'dashboard',
-      label: 'Trang chu'
-    }, {
-      key: 'word',
-      label: 'Quan ly tu dien'
-    }]
-  );
+  const { pathname } = useLocation();
+  const menuItems: MenuItem[] = [
+    {
+      key: "/folder",
+      label: "Thư mục",
+      icon:<DashboardOutlined />
+    },
+    {
+      key: "/word",
+      label: "Quản lý từ điển",
+      icon:<FolderOpenOutlined />
+    },
+  ]
 
   const onClick: MenuProps["onClick"] = async (e) => {
-    const { key } = e;
-    setDocumentId(dispatch, key);
-    navigate(ROUTES_PATH.WORD);
+    const { key } = e;    
+    navigate(key);
   };
-
-
 
   return (
     <SC.Wrapper
@@ -43,8 +38,8 @@ export const Sider = () => {
       <Menu
         theme="light"
         mode="inline"
-        defaultSelectedKeys={[documentId]}
-        defaultOpenKeys={["1", "2", "3", "4"]}
+        defaultSelectedKeys={[pathname]}
+        // defaultOpenKeys={["1", "2", "3", "4"]}
         items={menuItems}
         onClick={onClick}
       />

@@ -1,12 +1,12 @@
 import { ROUTES_PATH, ROUTES_TYPES } from "../constants/routers";
-import { Dashboard } from "../pages/Dashboard";
 import { PageLayout } from "../layouts/PageLayout";
 import { GroupLayout } from "../layouts/GroupLayout";
 import SignIn from "../pages/SignIn";
 import { ContentPage } from "../pages/ContentPage";
-import { Music } from "../pages/Music";
+import { Course } from "../pages/Course";
 import { DocumentMenu } from "../pages/DocumentMenu";
 import { Word } from "../pages/Word";
+import { Folder } from "../pages/Folder";
 
 export const RoutesConfig = [
   {
@@ -21,12 +21,12 @@ export const RoutesConfig = [
     type: ROUTES_TYPES.GROUP,
     layout: GroupLayout,
     routes: [
-      {
-        key: 1,
-        path: ROUTES_PATH.DASHBOARD,
-        element: Dashboard,
-        isPrivate: true,
-      },
+      // {
+      //   key: 1,
+      //   path: ROUTES_PATH.DASHBOARD,
+      //   element: Dashboard,
+      //   isPrivate: true,
+      // },
       {
         key: 2,
         path: ROUTES_PATH.CONTENT,
@@ -35,8 +35,8 @@ export const RoutesConfig = [
       },
       {
         key: 3,
-        path: ROUTES_PATH.MUSIC,
-        element: Music,
+        path: ROUTES_PATH.COURSE,
+        element: Course,
         isPrivate: true,
       },
       {
@@ -49,6 +49,18 @@ export const RoutesConfig = [
         key: 5,
         path: ROUTES_PATH.WORD,
         element: Word,
+        isPrivate: true,
+      },
+      {
+        key: 6,
+        path: ROUTES_PATH.FOLDER,
+        element: Folder,
+        isPrivate: true,
+      },
+      {
+        key: 7,
+        path: ROUTES_PATH.FOLDER_DETAIL,
+        element: Folder,
         isPrivate: true,
       },
     ],

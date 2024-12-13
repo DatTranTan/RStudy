@@ -44,7 +44,7 @@ const SignIn = () => {
       <Card className="card-wrapper">
         <div style={{ textAlign: "center", color: "#fff" }}>
           <h2>WELCOME TO</h2>
-          <h1>HAVEN</h1>
+          <h1>R STUDY</h1>
         </div>
         <Form
           name="basic"

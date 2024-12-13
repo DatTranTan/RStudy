@@ -1,18 +1,14 @@
+import { Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import { useContextController } from "../../context/context";
-import * as SC from "./styled";
-import Api from "../../api";
 import { DocumentType } from "../../types";
-import { VerticalCard } from "../../components/VerticalCard";
-import { Col, Row } from "antd";
-import { HorizontalCard } from "../../components/HorizontalCard";
+import * as SC from "./styled";
 
 export const ContentPage = () => {
-  const { controller, dispatch } = useContextController();
-  const { collections, documentId } = controller;
+  const { controller } = useContextController();
+  const {  documentId } = controller;
   // console.log(collections, "333333333");
   const [childrensDoc, setChildrensDoc] = useState<DocumentType[]>([]);
-  const [contentType, setContentType] = useState<number>(123);
   const [videos, setVideos] = useState<DocumentType[]>([]);
   const [audios, setAudios] = useState<DocumentType[]>([]);
   const [posts, setPosts] = useState<DocumentType[]>([]);
@@ -30,6 +26,10 @@ export const ContentPage = () => {
         // setVideos(video);
         // setAudios(audio);
         // setPosts(post);
+        setChildrensDoc([])
+        setAudios([])
+        setVideos([])
+        setPosts([])
       } catch (error) {
         console.error(error);
       }
@@ -51,11 +51,11 @@ export const ContentPage = () => {
               xl={{ span: 6 }}
               xxl={{ span: 4 }}
             >
-              <VerticalCard
+              {/* <VerticalCard
                 name={_.name}
                 image={_.image}
                 description={_.description}
-              />
+              /> */}
             </Col>
           );
         })}
@@ -67,25 +67,25 @@ export const ContentPage = () => {
               md={{ span: 6 }}
               xxl={{ span: 4 }}
             >
-              <VerticalCard
+              {/* <VerticalCard
                 name={_.name}
                 image={_.thumbnail}
                 videoUrl={_.videoUrl}
-              />
+              /> */}
             </Col>
           );
         })}
         {audios?.map((_) => {
           return (
             <Col xs={{ span: 24 }}>
-              <HorizontalCard name={_.name} />
+              {/* <HorizontalCard name={_.name} /> */}
             </Col>
           );
         })}
         {posts?.map((_) => {
           return (
             <Col xs={{ span: 24 }}>
-              <HorizontalCard name={_.name} />
+              {/* <HorizontalCard name={_.name} /> */}
             </Col>
           );
         })}

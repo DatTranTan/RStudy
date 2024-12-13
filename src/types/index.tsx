@@ -33,13 +33,34 @@ export type CollectionsType = {
 };
 
 export type WordType = {
-  word: string;
-  meaning: string;
-  phonetic: string;
-  audio: string;
-  image: string;
-  type: string;
-  topic: string;
-  exEnglish: string;
-  exVietnamese: string;
+  _id?: string;
+  id?: string;
+  word?: string;
+  meaning?: string;
+  phonetic?: string;
+  audio?: string;
+  image?: string;
+  type?: string;
+  topic?: string;
+  exEnglish?: string;
+  exVietnamese?: string;
+};
+
+export type FolderType = {
+  _id?: string;
+  id?: string;
+  user?: string;
+  courses?: string[];
+  name?: string;
+  topic?: string;
+  image?: string;
+};
+
+export type CourseType = {
+  _id?: string;
+  id?: string;
+  name?: string;
+  folder?: string;
+  description?: string;
+  words?: string[];
 };

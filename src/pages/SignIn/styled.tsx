@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { borderRadius, fontSize, fontWeight } from "../../constants/theme";
 import bg_signin from "../../assets/bg_signin.png";
+import { borderRadius, fontWeight } from "../../constants/theme";
 
 export const Wrapper = styled.div`
   background-image: url(${bg_signin});

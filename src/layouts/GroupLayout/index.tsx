@@ -1,16 +1,11 @@
-import { Fragment, useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import * as SC from "./styled";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { Header } from "../Header";
-import { Footer } from "../Footer";
 import { Sider } from "../Sider";
-import { useContextController } from "../../context/context";
-import { size } from "../../constants/size";
+import * as SC from "./styled";
 
 export const GroupLayout = () => {
-  const { controller, dispatch } = useContextController();
-  const { collections, collapsedSider, documentId } = controller;
 
   useEffect(() => {
     Cookies.set("testCookie", "testValue", { expires: 10 / 86400 });

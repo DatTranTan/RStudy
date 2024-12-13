@@ -1,9 +1,11 @@
 export const ROUTES_PATH = {
   SIGN_IN: "/sign-in",
   DASHBOARD: "/dashboard",
+  FOLDER: "/folder",
+  FOLDER_DETAIL: "/folder/:id",
   WORD: "/word",
   CONTENT: "/content",
-  MUSIC: "/music",
+  COURSE: "/course",
   DOCUMENT: "/document",
 };
 

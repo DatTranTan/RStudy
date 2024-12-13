@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
-import { setCollapsedSider, useContextController } from "../../context/context";
-import * as SC from "./styled";
-import Api from "../../api";
-import { CollectionsType, DocumentType } from "../../types";
-import { VerticalCard } from "../../components/VerticalCard";
 import { Col, Row } from "antd";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { space } from "../../constants/theme";
 import { ROUTES_PATH } from "../../constants/routers";
+import { space } from "../../constants/theme";
+import { useContextController } from "../../context/context";
+import { CollectionsType, DocumentType } from "../../types";
+import * as SC from "./styled";
 
 export const DocumentMenu = () => {
-  const { controller, dispatch } = useContextController();
+  const { controller } = useContextController();
   const { collections } = controller;
   const navigate = useNavigate();
 

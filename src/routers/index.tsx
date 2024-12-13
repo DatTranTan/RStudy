@@ -1,8 +1,4 @@
-import {
-  Navigate,
-  Routes as ReactRoutes,
-  Route
-} from "react-router-dom";
+import { Navigate, Routes as ReactRoutes, Route } from "react-router-dom";
 
 import { ReactNode } from "react";
 import RequireAuth from "../auth/RequireAuth";
@@ -18,7 +14,6 @@ const RouteElement = ({
 }) => {
   return isPrivate ? <RequireAuth>{Component}</RequireAuth> : Component;
 };
-
 const Routes = () => {
   return (
     <ReactRoutes>
@@ -27,26 +22,27 @@ const Routes = () => {
 
         if (type === ROUTES_TYPES.PAGE) {
           const { element: Component } = item;
-          return (
-            <Route key={item.path} path={item.path} element={<Layout />}>
-              <Route
-                index
-                element={
-                  <RouteElement
-                    isPrivate={item.isPrivate}
-                    Component={Component()}
-                  />
-                }
-              />
-            </Route>
-          );
+          if (Component)
+            return (
+              <Route key={item.path} path={item.path} element={<Layout />}>
+                <Route
+                  index
+                  element={
+                    <RouteElement
+                      isPrivate={item.isPrivate}
+                      Component={Component()}
+                    />
+                  }
+                />
+              </Route>
+            );
         }
 
         if (type === ROUTES_TYPES.GROUP) {
           const routes = item.routes;
 
           return (
-            <Route element={<Layout />}>
+            <Route key={item.path} element={<Layout />}>
               {routes?.map(({ path, element: Component, isPrivate, key }) => {
                 return (
                   <Route
@@ -66,12 +62,8 @@ const Routes = () => {
         }
       })}
 
-      <Route
-        path="*"
-        element={<Navigate to={ROUTES_PATH.DASHBOARD} replace />}
-      />
+      <Route path="*" element={<Navigate to={ROUTES_PATH.FOLDER} replace />} />
     </ReactRoutes>
   );
 };
-
 export default Routes;

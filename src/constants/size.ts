@@ -1,7 +1,7 @@
 export const size = {
-  siderDefault: 300,
+  siderDefault: 200,
   siderCollapsed: 0,
-  header: 100,
+  header: 70,
 };
 
 export const image = {

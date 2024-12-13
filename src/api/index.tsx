@@ -1,7 +1,7 @@
 // api/productApi.js
 
 import axiosClient from "../configs/axios";
-import { SignInType, WordType } from "../types";
+import { FolderType, SignInType, WordType } from "../types";
 
 const signIn = async (data: SignInType) => {
   const url = `user/login`;
@@ -9,15 +9,33 @@ const signIn = async (data: SignInType) => {
   return result;
 };
 
-const createFolder = async (data: SignInType) => {
+const createFolder = async (data: FolderType) => {
   const url = `folder`;
   const result = await axiosClient.post(url, { ...data });
   return result;
 };
 
-const getFolder = async () => {
+const getFolders = async () => {
   const url = `folder`;
   const result = await axiosClient.get(url);
+  return result;
+};
+
+const getFolderById = async (folderId: string) => {
+  const url = `folder/${folderId}`;
+  const result = await axiosClient.get(url);
+  return result;
+};
+
+const updateFolder = async (data: FolderType) => {
+  const url = `folder`;
+  const result = await axiosClient.put(url, { ...data });
+  return result;
+};
+
+const deleteFolder = async (data: FolderType) => {
+  const url = `folder`;
+  const result = await axiosClient.delete(url, { data });
   return result;
 };
 
@@ -30,6 +48,24 @@ const getWords = async () => {
 const createWord = async (data: WordType) => {
   const url = `word`;
   const result = await axiosClient.post(url, { ...data });
+  return result;
+};
+
+const updateWord = async (data: WordType) => {
+  const url = `word`;
+  const result = await axiosClient.post(url, { ...data });
+  return result;
+};
+
+const deleteWord = async (data: WordType) => {
+  const url = `word`;
+  const result = await axiosClient.delete(url, { data });
+  return result;
+};
+
+const getCourseById = async (courseId: string) => {
+  const url = `course/${courseId}`;
+  const result = await axiosClient.get(url);
   return result;
 };
 
@@ -74,8 +110,17 @@ const Api = {
   documents,
   contents,
   god_words,
-  getFolder,
-  getWords
+  getFolders,
+  getFolderById,
+  createFolder,
+  updateFolder,
+  deleteFolder,
+  getWords,
+  createWord,
+  updateWord,
+  deleteWord,
+  getCourseById
+
   //   signIn: (data: SignInType) => {
   //     const url = `authentication/login`;
   //     return axiosClient.post(url, {

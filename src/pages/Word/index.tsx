@@ -21,6 +21,7 @@ import Api from "../../api";
 import { VerticalCard } from "../../components/VerticalCard";
 import { WordType } from "../../types";
 import * as SC from "./styled";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 import type { FormProps, TableColumnsType, TablePaginationConfig } from "antd";
 type FieldType = {
@@ -33,7 +34,7 @@ export const Word = () => {
 
   const [words, setWords] = useState<WordType[] | []>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [isModeTable, setIsModeTable] = useState<boolean>(true);
+  const [isModeTable, setIsModeTable] = useState<boolean>(isBrowser);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 100,

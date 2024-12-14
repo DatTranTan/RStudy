@@ -8,7 +8,7 @@ import { ROUTES_PATH } from "../constants/routers";
 
 const axiosClient = axios.create({
   // baseURL: import.meta.env.VITE_API_URL,
-  baseURL: 'http://localhost:3167/',
+  baseURL: "http://localhost:3167/",
   headers: {
     "content-type": "application/json",
   },
@@ -34,7 +34,7 @@ axiosClient.interceptors.response.use(
       Cookies.remove("accessToken");
       notification.error({
         message: "LỖI",
-        description: "Đăng nhập lại",
+        description: "Xảy ra lỗi khi đăng nhập",
       });
       return <Navigate to={ROUTES_PATH.SIGN_IN} replace />;
     }

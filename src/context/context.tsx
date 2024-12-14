@@ -7,6 +7,7 @@ import {
   useReducer,
 } from "react";
 import { CollectionsType } from "../types";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 const Context = createContext<GlobalContext | null>(null);
 
@@ -52,7 +53,7 @@ function reducer(state: GlobalState, action: ActionType) {
 function ContextProvider({ children }: { children: ReactNode }) {
   const initialState: GlobalState = {
     collections: [],
-    collapsedSider: false,
+    collapsedSider: isMobile,
     searchText: "",
     documentId: "dashboard",
   };

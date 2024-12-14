@@ -16,6 +16,7 @@ import Api from "../../api";
 import { FolderType, WordType } from "../../types";
 import * as SC from "./styled";
 import {
+  ArrowLeftOutlined,
   DeleteOutlined,
   EditOutlined,
   LikeOutlined,
@@ -23,18 +24,23 @@ import {
   SoundOutlined,
   StarOutlined,
 } from "@ant-design/icons";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+
 
 import type { FormProps } from "antd";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { VerticalCard } from "../../components/VerticalCard";
 import { FlipCard } from "../../components/FlipCard";
 import { DrawerSourse } from "../../components/DrawerSourse";
+import { ROUTES_PATH } from "../../constants/routers";
 const { Meta } = Card;
 
 export const Course = () => {
   const [words, setWords] = useState<WordType[] | []>([]);
+  const [folderId, setFolderId] = useState<string>("");
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("id");
+  const navigate = useNavigate();
 
   console.log("courseId", courseId);
 
@@ -44,12 +50,12 @@ export const Course = () => {
     }
   }, [courseId]);
 
-    const getDetailCourse = async () => {
+  const getDetailCourse = async () => {
     try {
       if (courseId) {
         const { data } = await Api.getCourseById(courseId);
-        // await setFolder(data);
-        setWords(data.words);
+        await setFolderId(data.folder);
+        await setWords(data.words);
         console.log(data);
       }
     } catch (error) {
@@ -57,14 +63,23 @@ export const Course = () => {
     }
   };
 
- 
   return (
     <SC.Wrapper>
-      {/* <div className="wrapper-action">
-        <Button onClick={()=>setOpenDrawer(true)} type="primary">
-          Thêm từ
-        </Button>
-      </div> */}
+<BrowserView>
+  <h1>This is rendered only in browser</h1>
+</BrowserView>
+<MobileView>
+  <h1>This is rendered only on mobile</h1>
+</MobileView>
+      <div className="wrapper-action">
+        <Button
+          icon={<ArrowLeftOutlined />}
+          style={{ marginRight: "0.5rem" }}
+          onClick={() => {
+            navigate(`${ROUTES_PATH.FOLDER}?id=${folderId}`);
+          }}
+        ></Button>
+      </div>
       <div>
         <SC.WrapperItem>
           {["Thẻ ghi nhớ", "Học từ", "Kiểm tra", "Ghép thẻ"].map((_) => (

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+
 
 export const Wrapper = styled.div`
   .wrapper-action {
@@ -31,6 +33,9 @@ export const WrapperItem = styled.div`
  display: flex;
     gap: 1rem;
     justify-content: center;
+
+    overflow-x: ${isMobile ? "auto" : "none"}; 
+
 
     .ant-card-body {
     text-align: center;

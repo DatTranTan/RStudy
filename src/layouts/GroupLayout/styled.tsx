@@ -22,5 +22,5 @@ export const ContentWrapper = styled(Content)`
 
   overflow: auto;
 
-  ${scrollbar}
+  /* ${scrollbar} */
 `;

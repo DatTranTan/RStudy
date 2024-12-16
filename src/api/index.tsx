@@ -75,6 +75,13 @@ const createCourse = async (data: CourseType) => {
   return result;
 };
 
+const deleteCourse = async (data: FolderType) => {
+  const url = `course`;
+  const result = await axiosClient.delete(url, { data });
+  return result;
+};
+
+
 const profile = async () => {
   const url = `user/me`;
   const result = await axiosClient.post(url);
@@ -125,7 +132,8 @@ const Api = {
   createWord,
   updateWord,
   deleteWord,
-  getCourseById,createCourse
+  getCourseById,createCourse,
+  deleteCourse
 
   //   signIn: (data: SignInType) => {
   //     const url = `authentication/login`;

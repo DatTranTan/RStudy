@@ -7,7 +7,12 @@ import {
   useReducer,
 } from "react";
 import { CollectionsType } from "../types";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
 
 const Context = createContext<GlobalContext | null>(null);
 
@@ -23,6 +28,7 @@ type GlobalState = {
   collapsedSider: boolean;
   searchText: string;
   documentId: string;
+  titleHeader: string;
 };
 
 type ActionType = {
@@ -44,6 +50,9 @@ function reducer(state: GlobalState, action: ActionType) {
     case "DOCUMENT_ID": {
       return { ...state, documentId: action.value };
     }
+    case "TITLE_HEADER": {
+      return { ...state, titleHeader: action.value };
+    }
     default: {
       throw new Error(`${action.type}`);
     }
@@ -56,6 +65,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
     collapsedSider: isMobile,
     searchText: "",
     documentId: "dashboard",
+    titleHeader: "",
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -91,18 +101,26 @@ const setCollections = (
   }) => void,
   value: CollectionsType[]
 ) => dispatch({ type: "COLLECTIONS", value });
+
 const setCollapsedSider = (
   dispatch: ({ type, value }: { type: string; value: boolean }) => void,
   value: boolean
 ) => dispatch({ type: "COLLAPSED_SIDER", value });
+
 const setSearchText = (
   dispatch: ({ type, value }: { type: string; value: string }) => void,
   value: string
 ) => dispatch({ type: "SEARCH_TEXT", value });
+
 const setDocumentId = (
   dispatch: ({ type, value }: { type: string; value: string }) => void,
   value: string
 ) => dispatch({ type: "DOCUMENT_ID", value });
+
+const setTitleHeader = (
+  dispatch: ({ type, value }: { type: string; value: string }) => void,
+  value: string
+) => dispatch({ type: "TITLE_HEADER", value });
 
 export {
   ContextProvider,
@@ -111,4 +129,5 @@ export {
   setCollapsedSider,
   setSearchText,
   setDocumentId,
+  setTitleHeader,
 };

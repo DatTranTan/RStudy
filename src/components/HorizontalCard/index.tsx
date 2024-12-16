@@ -1,42 +1,92 @@
-import {
-  AppstoreAddOutlined,
-  DeleteOutlined,
-  EditOutlined
-} from "@ant-design/icons";
-import { Avatar, Card } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Card, Modal, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "../../constants/routers";
 import { FolderType } from "../../types";
 import * as SC from "./styled";
+import Api from "../../api";
 const { Meta } = Card;
+
 type HorizontalCardType = {
   folderDetail: FolderType;
-  deleteFolder: (_id: string, name: string) => void;
+  getFolders: () => void;
+  setFolderUpdate: (value: FolderType) => void;
+  setOpen: (value: boolean) => void;
 };
 
 export const HorizontalCard = ({
   folderDetail,
-  deleteFolder,
+  getFolders,
+  setFolderUpdate,
+  setOpen,
 }: HorizontalCardType) => {
   const navigate = useNavigate();
+
+  const deleteFolder = async () => {
+    try {
+      if (!folderDetail._id) return;
+      await Api.deleteFolder({
+        id: folderDetail._id,
+        name: folderDetail.name,
+      });
+      notification.success({
+        message: "THÀNH CÔNG",
+        description: "Xóa thư mục thành công",
+      });
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: "THẤT BẠI",
+        description: (error as any).message,
+      });
+    } finally {
+      getFolders();
+    }
+  };
   return (
     <SC.Wrapper>
       <Card
         style={{ minWidth: 300 }}
-        // cover={
-        //   <img
-        //     alt="example"
-        //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-        //   />
-        // }
+        cover={
+          <img
+            alt={folderDetail.image}
+            src={folderDetail.image}
+            style={{ padding: "2px", cursor: "pointer" }}
+            onClick={() => {
+              navigate(`${ROUTES_PATH.FOLDER}?id=${folderDetail._id}`);
+            }}
+          />
+        }
         actions={[
-          <AppstoreAddOutlined key="appstoreadd" />,
-          <EditOutlined key="edit" />,
+          <EditOutlined
+            key="edit"
+            onClick={async () => {
+              await navigate(`${ROUTES_PATH.FOLDER}?action=update`);
+              await setFolderUpdate(folderDetail);
+              await setOpen(true);
+            }}
+          />,
           <DeleteOutlined
             key="delete"
             onClick={() => {
-              if (folderDetail._id && folderDetail.name)
-                deleteFolder(folderDetail._id, folderDetail.name);
+              Modal.confirm({
+                title: "Xác nhận xóa?",
+                width: 500,
+                centered: true,
+                content: <>{folderDetail.name}</>,
+                okType: "danger",
+                onOk: deleteFolder,
+                // onOk: () => {
+                //   if (folderDetail._id && folderDetail.name)
+                //     deleteFolder(folderDetail._id, folderDetail.name);
+                // },
+                footer: (_, { OkBtn, CancelBtn }) => (
+                  <>
+                    <CancelBtn />
+                    <OkBtn />
+                  </>
+                ),
+              });
             }}
           />,
         ]}
@@ -48,7 +98,7 @@ export const HorizontalCard = ({
           }}
         >
           <Meta
-            avatar={<Avatar src={folderDetail.image} />}
+            // avatar={<Avatar src={folderDetail.image} />}
             title={folderDetail.name}
             description={`${folderDetail.topic} | Học phần: ${folderDetail.courses?.length}`}
           />

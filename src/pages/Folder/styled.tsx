@@ -10,4 +10,8 @@ export const Wrapper = styled.div`
     flex-direction: column;
     gap: 1rem;
   }
+
+  .ant-card .ant-card-meta-title {
+    white-space: normal;
+  }
 `;

@@ -17,8 +17,6 @@ import Api from "../../api";
 import type { FormProps } from "antd";
 import { useSearchParams } from "react-router-dom";
 
-const { Meta } = Card;
-
 type DrawerSourseType = {
   openDrawer: boolean;
   setOpenDrawer: (value: boolean) => void;
@@ -28,7 +26,7 @@ type DrawerSourseType = {
 export const DrawerSourse = ({
   openDrawer,
   setOpenDrawer,
-  getDetailFolder
+  getDetailFolder,
 }: DrawerSourseType) => {
   const [count, setCount] = useState<number>(0);
   const [words, setWords] = useState<WordType[] | []>([]);
@@ -50,7 +48,7 @@ export const DrawerSourse = ({
 
         await onClose();
         console.log(values, data);
-await form.resetFields()
+        await form.resetFields();
         await notification.success({
           message: "THÀNH CÔNG",
           description: "Thêm học phần thành công",
@@ -62,9 +60,8 @@ await form.resetFields()
         message: "LỖI",
         description: "Xảy ra lỗi khi thêm học phần",
       });
-    }finally{
-
-      getDetailFolder()
+    } finally {
+      getDetailFolder();
     }
   };
 
@@ -115,7 +112,7 @@ await form.resetFields()
         }
       >
         <Form
-        form={form}
+          form={form}
           name="input-course"
           layout="vertical"
           onFinish={onFinish}
@@ -150,6 +147,7 @@ await form.resetFields()
               )}
               optionRender={(option) => (
                 <Space>
+                  <img alt="" style={{ height: 50 }} src={option.data.image} />
                   <b>{option.data.word}</b>
                   <i>{option.data.phonetic}</i>
                   <>{option.data.meaning}</>

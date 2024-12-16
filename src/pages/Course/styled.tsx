@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
-
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
 
 export const Wrapper = styled.div`
   .wrapper-action {
@@ -14,37 +18,39 @@ export const Wrapper = styled.div`
     justify-content: center;
   }
 
- 
+  .wrapper-container-card {
+    display: flex;
+    flex-direction: column;
+  }
 
-  
-
-  .wrapper-card{
+  .wrapper-card {
     margin-top: 1rem;
     display: flex;
     justify-content: center;
   }
-
-  
-
 `;
 
-
 export const WrapperItem = styled.div`
- display: flex;
-    gap: 1rem;
-    justify-content: center;
-
-    overflow-x: ${isMobile ? "auto" : "none"}; 
-
-
-    .ant-card-body {
+  display: flex;
+  gap: 1rem;
+  justify-content: ${isMobile ? "normal" : "center"};
+  overflow-x: auto;
+padding-bottom:1rem;
+  .ant-card-body {
     text-align: center;
-    padding:1rem;
+    padding: 1rem;
   }
 
-  
   .ant-card-cover {
     display: flex;
     padding-top: 1rem;
   }
-`
+`;
+
+export const WrapperCarousel = styled.div`
+  margin: auto;
+  margin-bottom: 1rem;
+  /* max-width: 350px;
+min-width: 250px; */
+  width: ${isMobile ? "100%" : "400px"};
+`;

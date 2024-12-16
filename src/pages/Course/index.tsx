@@ -24,18 +24,28 @@ import {
   SoundOutlined,
   StarOutlined,
 } from "@ant-design/icons";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
-
-
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
+import icon_flashcard from "../../assets/icon_flashcard.png";
+import icon_game from "../../assets/icon_game.png";
+import icon_test from "../../assets/icon_test.png";
+import icon_learn from "../../assets/icon_learn.png";
 import type { FormProps } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { VerticalCard } from "../../components/VerticalCard";
 import { FlipCard } from "../../components/FlipCard";
 import { DrawerSourse } from "../../components/DrawerSourse";
 import { ROUTES_PATH } from "../../constants/routers";
+import { setTitleHeader, useContextController } from "../../context/context";
 const { Meta } = Card;
 
 export const Course = () => {
+  const { controller, dispatch } = useContextController();
+  const { titleHeader } = controller;
   const [words, setWords] = useState<WordType[] | []>([]);
   const [folderId, setFolderId] = useState<string>("");
   const [searchParams] = useSearchParams();
@@ -56,7 +66,7 @@ export const Course = () => {
         const { data } = await Api.getCourseById(courseId);
         await setFolderId(data.folder);
         await setWords(data.words);
-        console.log(data);
+        await setTitleHeader(dispatch, `Học phần: ${data?.name}`);
       }
     } catch (error) {
       console.error(error);
@@ -65,12 +75,6 @@ export const Course = () => {
 
   return (
     <SC.Wrapper>
-<BrowserView>
-  <h1>This is rendered only in browser</h1>
-</BrowserView>
-<MobileView>
-  <h1>This is rendered only on mobile</h1>
-</MobileView>
       <div className="wrapper-action">
         <Button
           icon={<ArrowLeftOutlined />}
@@ -80,9 +84,38 @@ export const Course = () => {
           }}
         ></Button>
       </div>
-      <div>
+      <MobileView>
+        <h1>{titleHeader}</h1>
+      </MobileView>
+
+      <div className="wrapper-container-card">
+        <SC.WrapperCarousel>
+          <Carousel arrows infinite={false}>
+            {words?.map((word) => {
+              return (
+                <div>
+                  <div
+                    style={{
+                      width: "100%",
+                      background: "#364d79",
+                      padding: isMobile ? "1.5rem" : "2rem",
+                    }}
+                  >
+                    <VerticalCard wordDetail={word} />
+                  </div>
+                </div>
+              );
+            })}
+          </Carousel>
+        </SC.WrapperCarousel>
         <SC.WrapperItem>
-          {["Thẻ ghi nhớ", "Học từ", "Kiểm tra", "Ghép thẻ"].map((_) => (
+          {[
+            { text: "Thẻ ghi nhớ", image: icon_flashcard },
+
+            { text: "Học tập", image: icon_learn },
+            { text: "Kiểm tra", image: icon_test },
+            { text: "Trò chơi", image: icon_game },
+          ].map((_) => (
             <div>
               <Card
                 hoverable
@@ -97,18 +130,16 @@ export const Course = () => {
                       margin: "auto",
                       borderRadius: "1rem",
                     }}
-                    src="https://indongloi.com/wp-content/uploads/in-flashcard-02.jpg"
+                    src={_.image}
                   />
                 }
               >
-                <Meta title={_} />
+                <Meta title={_.text} />
               </Card>
             </div>
           ))}
         </SC.WrapperItem>
         <div className="wrapper-card">
-          {/* {words?.map((word) => {
-                return ( */}
           <List
             style={{ background: "#f0f0f0", padding: "1rem", width: "100%" }}
             itemLayout="vertical"
@@ -122,27 +153,6 @@ export const Course = () => {
             dataSource={words}
             renderItem={(item) => <FlipCard wordDetail={item} />}
           />
-          {/* );
-              })} */}
-          {/* <div style={{ maxWidth: 800, minWidth: 300 }}>
-            <Carousel arrows infinite={false}>
-              {words?.map((word) => {
-                return (
-                  <div>
-                    <div
-                      style={{
-                        width: "100%",
-                        background: "#364d79",
-                        padding: "1.5rem",
-                      }}
-                    >
-                      <VerticalCard wordDetail={word} />
-                    </div>
-                  </div>
-                );
-              })}
-            </Carousel>
-          </div> */}
         </div>
       </div>
       {/* {!courseId ? (

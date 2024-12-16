@@ -8,6 +8,7 @@ import {
   fontWeight,
   space,
 } from "../../constants/theme";
+import { isMobile } from "react-device-detect";
 
 const { Header } = Layout;
 
@@ -24,7 +25,7 @@ export const Wrapper = styled(Header)`
   margin-bottom: ${space.md};
   line-height: unset;
   overflow: auto;
-
+padding:${isMobile ? "0 10px" : "0 60px"};
   .icon-style {
     font-size: ${fontSize.md};
     cursor: pointer;
@@ -40,6 +41,7 @@ export const LeftWrapper = styled.div`
     border-radius: ${borderRadius.normal};
     height: ${size.header - 10}px;
     object-fit: cover;
+    margin-right: 2rem;
   }
 `;
 

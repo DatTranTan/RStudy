@@ -10,12 +10,20 @@ export const FlipCard = ({ wordDetail }: any) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isFlip, setIsFlip] = useState<boolean>(false);
 
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
   return (
-    <SC.Wrapper onClick={() => setIsFlip(!isFlip)}>
+    <SC.Wrapper>
+      <audio ref={audioRef} src={wordDetail.audio} />
+
       <List.Item
         key={wordDetail.word}
         actions={[
-          <SoundOutlined key="sound" />,
+          <SoundOutlined key="sound" onClick={playAudio} />,
           <EditOutlined key="edit" />,
           <DeleteOutlined key="delete" />,
         ]}
@@ -27,21 +35,24 @@ export const FlipCard = ({ wordDetail }: any) => {
           />
         }
       >
-        {isFlip ? (
-          <div className="flip-card-front">
-            <List.Item.Meta
-              title={wordDetail.meaning}
-              description={wordDetail.type}
-            />
-          </div>
-        ) : (
-          <div className="flip-card-back">
-            <List.Item.Meta
-              title={wordDetail.word}
-              description={wordDetail.phonetic}
-            />
-          </div>
-        )}
+        <List.Item.Meta
+          title={
+            <>
+              <div>
+                {wordDetail.word}{" "}
+                <span
+                  style={{
+                    color: "#00000073",
+                  }}
+                >
+                  {wordDetail.phonetic}
+                </span>
+              </div>
+              <div>{wordDetail.meaning}</div>
+            </>
+          }
+          description={wordDetail.type}
+        />
         <div>{wordDetail.exEnglish}</div>
         <div>{wordDetail.exVietnamese}</div>
       </List.Item>

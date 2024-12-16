@@ -1,34 +1,51 @@
-import { DashboardOutlined, FolderOpenOutlined } from "@ant-design/icons";
+import { FolderOpenOutlined, ReadOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { size } from "../../constants/size";
-import { useContextController } from "../../context/context";
+import { setTitleHeader, useContextController } from "../../context/context";
 import * as SC from "./styled";
-type MenuItem = Required<MenuProps>['items'][number];
+import { useEffect } from "react";
+type MenuItem = Required<MenuProps>["items"][number];
 
 export const Sider = () => {
-  const { controller } = useContextController();
+  const { controller, dispatch } = useContextController();
+
   const { collapsedSider } = controller;
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname) {
+      const item = menuItems.find(
+        (menuItem: MenuItem) => menuItem?.key === pathname
+      );
+      setTitleHeader(dispatch, (item as any)?.label);
+    }
+  }, [pathname]);
+
   const menuItems: MenuItem[] = [
     {
       key: "/folder",
-      label: "Thư mục",
-      icon:<DashboardOutlined />
+      label: "Thư viện của tôi",
+      icon: <FolderOpenOutlined />,
     },
     {
       key: "/word",
       label: "Quản lý từ điển",
-      icon:<FolderOpenOutlined />
+      icon: <ReadOutlined />,
     },
-  ]
+  ];
 
   const onClick: MenuProps["onClick"] = async (e) => {
-    const { key } = e;    
-    navigate(key);
+    console.log(e);
+
+    const { key } = e;
+    await navigate(key);
+
+    const item = menuItems.find((menuItem: MenuItem) => menuItem?.key === key);
+    setTitleHeader(dispatch, (item as any).label);
   };
 
   return (
@@ -39,7 +56,6 @@ export const Sider = () => {
         theme="light"
         mode="inline"
         defaultSelectedKeys={[pathname]}
-        // defaultOpenKeys={["1", "2", "3", "4"]}
         items={menuItems}
         onClick={onClick}
       />

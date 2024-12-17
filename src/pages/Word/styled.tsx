@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
 
   .wrapper-action {
     margin-bottom: 1rem;
+    min-width: 370px;
   }
 
   .mode-card {

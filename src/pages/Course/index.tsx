@@ -1,60 +1,42 @@
 import {
-  Avatar,
-  Button,
-  Card,
-  Carousel,
-  Drawer,
-  Form,
-  Input,
-  List,
-  notification,
-  Select,
-  Space,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import Api from "../../api";
-import { FolderType, WordType } from "../../types";
-import * as SC from "./styled";
-import {
   ArrowLeftOutlined,
   DeleteOutlined,
   EditOutlined,
-  LikeOutlined,
-  MessageOutlined,
-  SoundOutlined,
-  StarOutlined,
 } from "@ant-design/icons";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
+import { Button, Card, Carousel, List, Modal, notification } from "antd";
+import { useEffect, useState } from "react";
+import { isMobile, MobileView } from "react-device-detect";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Api from "../../api";
 import icon_flashcard from "../../assets/icon_flashcard.png";
 import icon_game from "../../assets/icon_game.png";
-import icon_test from "../../assets/icon_test.png";
 import icon_learn from "../../assets/icon_learn.png";
-import type { FormProps } from "antd";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { VerticalCard } from "../../components/VerticalCard";
-import { FlipCard } from "../../components/FlipCard";
+import icon_test from "../../assets/icon_test.png";
 import { DrawerSourse } from "../../components/DrawerSourse";
+import { FlipCard } from "../../components/FlipCard";
+import { VerticalCard } from "../../components/VerticalCard";
 import { ROUTES_PATH } from "../../constants/routers";
 import { setTitleHeader, useContextController } from "../../context/context";
+import { CourseType } from "../../types";
+import * as SC from "./styled";
 const { Meta } = Card;
 
 export const Course = () => {
   const { controller, dispatch } = useContextController();
   const { titleHeader } = controller;
-  const [words, setWords] = useState<WordType[] | []>([]);
-  const [folderId, setFolderId] = useState<string>("");
+  // const [words, setWords] = useState<WordType[] | []>([]);
+  const [course, setCourse] = useState<CourseType | null>(null);
+  // const [folderId, setFolderId] = useState<string>("");
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("id");
   const navigate = useNavigate();
-
-  console.log("courseId", courseId);
+  const { pathname } = useLocation();
 
   useEffect(() => {
+    console.log(pathname, '999999999');
+    
     if (courseId) {
       getDetailCourse();
     }
@@ -64,23 +46,82 @@ export const Course = () => {
     try {
       if (courseId) {
         const { data } = await Api.getCourseById(courseId);
-        await setFolderId(data.folder);
-        await setWords(data.words);
         await setTitleHeader(dispatch, `Học phần: ${data?.name}`);
+        await setCourse(data);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const onOpen = async () => {
+    await setOpenDrawer(true);
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("action", "update");
+    await navigate(`${location.pathname}?${searchParams.toString()}`);
+  };
+
+  const deleteSourse = async () => {
+    try {
+      if (!course?._id) return;
+      await Api.deleteCourse({
+        id: course._id,
+        name: course.name,
+      });
+      await notification.success({
+        message: "THÀNH CÔNG",
+        description: "Xóa học phần thành công",
+      });
+
+      await navigate(`${ROUTES_PATH.FOLDER}?id=${course?.folder}`);
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: "THẤT BẠI",
+        description: (error as any).message,
+      });
+    }
+  };
+
   return (
     <SC.Wrapper>
+      <DrawerSourse
+        openDrawer={openDrawer}
+        setOpenDrawer={setOpenDrawer}
+        courseDetail={course}
+        getDetailCourse={getDetailCourse}
+      />
       <div className="wrapper-action">
         <Button
           icon={<ArrowLeftOutlined />}
           style={{ marginRight: "0.5rem" }}
           onClick={() => {
-            navigate(`${ROUTES_PATH.FOLDER}?id=${folderId}`);
+            navigate(`${ROUTES_PATH.FOLDER}?id=${course?.folder}`);
+          }}
+        ></Button>
+        <Button
+          icon={<EditOutlined />}
+          style={{ marginRight: "0.5rem" }}
+          onClick={onOpen}
+        ></Button>
+        <Button
+          icon={<DeleteOutlined />}
+          onClick={() => {
+            Modal.confirm({
+              title: "Xác nhận xóa?",
+              width: 500,
+              centered: true,
+              content: course?.name,
+              okType: "danger",
+              onOk: deleteSourse,
+
+              footer: (_, { OkBtn, CancelBtn }) => (
+                <>
+                  <CancelBtn />
+                  <OkBtn />
+                </>
+              ),
+            });
           }}
         ></Button>
       </div>
@@ -91,7 +132,7 @@ export const Course = () => {
       <div className="wrapper-container-card">
         <SC.WrapperCarousel>
           <Carousel arrows infinite={false}>
-            {words?.map((word) => {
+            {course?.words?.map((word: any) => {
               return (
                 <div>
                   <div
@@ -150,53 +191,11 @@ export const Course = () => {
               },
               pageSize: 20,
             }}
-            dataSource={words}
+            dataSource={course?.words}
             renderItem={(item) => <FlipCard wordDetail={item} />}
           />
         </div>
       </div>
-      {/* {!courseId ? (
-        <div className="mode-card">
-          <Row gutter={[12, 12]}>
-            {words?.map((folder: FolderType, index) => {
-              return (
-                <Col
-                  className="gutter-row"
-                  xs={{ span: 24 }}
-                  md={{ span: 12 }}
-                  lg={{ span: 8 }}
-                  xxl={{ span: 6 }}
-                >
-                  <HorizontalCard
-                    key={index}
-                    deleteFolder={deleteFolder}
-                    folderDetail={folder}
-                  />
-                </Col>
-              );
-            })}
-          </Row>
-        </div>
-      ) : (
-        <div className="mode-detail">
-          <div className="wrapper-card-course">
-            {folder?.courses?.map((item: any) => {
-              return (
-                <Card style={{ minWidth: 300 }}>
-                  <Meta
-                    title={item.name}
-                    description={`Số lượng từ: ${
-                      item.words.length
-                    } | Ngày tạo: ${dayjs(new Date(item.createdAt)).format(
-                      "DD/MM/YYYY"
-                    )}`}
-                  />
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      )} */}
     </SC.Wrapper>
   );
 };

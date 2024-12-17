@@ -4,16 +4,27 @@ import { useRef } from "react";
 import LazyLoad from "react-lazy-load";
 import { WordType } from "../../types";
 import * as SC from "./styled";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_PATH } from "../../constants/routers";
 
 const { Meta } = Card;
 
 type VerticalCardType = {
   wordDetail: WordType;
+  setOpen?: (value: boolean) => void;
   deleteWord?: (_id: string, word: string) => void;
+  setWordUpdate?:(word:WordType)=>void;
+
 };
 
-export const VerticalCard = ({ wordDetail, deleteWord }: VerticalCardType) => {
+export const VerticalCard = ({
+  wordDetail,
+  setOpen,
+  deleteWord,
+  setWordUpdate
+}: VerticalCardType) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const navigate = useNavigate();
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -56,9 +67,17 @@ export const VerticalCard = ({ wordDetail, deleteWord }: VerticalCardType) => {
         }
         actions={[
           <SoundOutlined key="sound" onClick={playAudio} />,
+          ...(setOpen
+            ? [
+              <EditOutlined key="edit" onClick={async () => {
+                if (setWordUpdate) await setWordUpdate(wordDetail)
+                await navigate(`${ROUTES_PATH.WORD}?action=update`);
+                await setOpen(true);
+              }} />,
+              ]
+            : []),
           ...(deleteWord
             ? [
-                <EditOutlined key="edit" />,
                 <DeleteOutlined
                   key="delete"
                   onClick={() => {

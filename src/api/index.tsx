@@ -39,9 +39,11 @@ const deleteFolder = async (data: FolderType) => {
   return result;
 };
 
-const getWords = async () => {
+const getWords = async (params: { topic?: string; search?: string }) => {
   const url = `word`;
-  const result = await axiosClient.get(url);
+  const result = await axiosClient.get(url, {
+    params: params,
+  });
   return result;
 };
 
@@ -53,13 +55,19 @@ const createWord = async (data: WordType) => {
 
 const updateWord = async (data: WordType) => {
   const url = `word`;
-  const result = await axiosClient.post(url, { ...data });
+  const result = await axiosClient.put(url, { ...data });
   return result;
 };
 
 const deleteWord = async (data: WordType) => {
   const url = `word`;
   const result = await axiosClient.delete(url, { data });
+  return result;
+};
+
+const deleteAllWord = async () => {
+  const url = `word/deleteAll`;
+  const result = await axiosClient.delete(url);
   return result;
 };
 
@@ -75,12 +83,17 @@ const createCourse = async (data: CourseType) => {
   return result;
 };
 
-const deleteCourse = async (data: FolderType) => {
+const updateCourse = async (data: CourseType) => {
+  const url = `course`;
+  const result = await axiosClient.put(url, { ...data });
+  return result;
+};
+
+const deleteCourse = async (data: CourseType) => {
   const url = `course`;
   const result = await axiosClient.delete(url, { data });
   return result;
 };
-
 
 const profile = async () => {
   const url = `user/me`;
@@ -110,19 +123,12 @@ const contents = async (data: { documentId: string }) => {
   return result;
 };
 
-const god_words = async () => {
-  const url = `god_words`;
-  const result = await axiosClient.get(url);
-  return result;
-};
-
 const Api = {
   signIn,
   profile,
   collections,
   documents,
   contents,
-  god_words,
   getFolders,
   getFolderById,
   createFolder,
@@ -132,40 +138,10 @@ const Api = {
   createWord,
   updateWord,
   deleteWord,
-  getCourseById,createCourse,
-  deleteCourse
-
-  //   signIn: (data: SignInType) => {
-  //     const url = `authentication/login`;
-  //     return axiosClient.post(url, {
-  //       ...data,
-  //     });
-  //   },
-  //   collections: () => {
-  //     const url = `collections`;
-  //     return axiosClient.get(url);
-  //   },
-  //   documents: (params) => {
-  //     const url = `documents`;
-  //     return axiosClient.get(url, {
-  //       params: params,
-  //     });
-  //   },
-  //   contents: (data) => {
-  //     const url = `contents`;
-  //     return axiosClient.post(url, {
-  //       ...data,
-  //     });
-  //   },
-  //   post: (params) => {
-  //     const url = `post`;
-  //     return axiosClient.get(url, {
-  //       params: params,
-  //     });
-  //   },
-  //   me: () => {
-  //     const url = `users/me`;
-  //     return axiosClient.get(url);
-  //   },
+  getCourseById,
+  createCourse,
+  deleteCourse,
+  updateCourse,
+  deleteAllWord
 };
 export default Api;

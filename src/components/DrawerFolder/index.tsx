@@ -1,11 +1,11 @@
 import type { FormProps } from "antd";
 import { Button, Drawer, Form, Input, notification, Space } from "antd";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../../api";
 import { ROUTES_PATH } from "../../constants/routers";
 import { FolderType } from "../../types";
 import * as SC from "./styled";
-import { useEffect } from "react";
 
 type DrawerFolderType = {
   open: boolean;
@@ -21,7 +21,6 @@ export const DrawerFolder = ({
   getFolders,
 }: DrawerFolderType) => {
   const [searchParams] = useSearchParams();
-  const folderId = searchParams.get("id");
   const [form] = Form.useForm();
   const action = searchParams.get("action");
   const navigate = useNavigate();
@@ -34,8 +33,8 @@ export const DrawerFolder = ({
         image: folderUpdate?.image,
       });
     }
-  }, [folderUpdate,open]);
- 
+  }, [folderUpdate, open]);
+
   const onFinish: FormProps<FolderType>["onFinish"] = async (values) => {
     try {
       console.log(values);

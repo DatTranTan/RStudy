@@ -29,7 +29,6 @@ export const Folder = () => {
   const [folder, setFolder] = useState<FolderType | null>(null);
   const [folderUpdate, setFolderUpdate] = useState<FolderType | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-  // const { pathname, search } = useLocation();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
@@ -65,34 +64,13 @@ export const Folder = () => {
     }
   };
 
-  const deleteSourse = async (id: string, name: string) => {
-    try {
-      if (!id) return;
-      await Api.deleteCourse({
-        id: id,
-        name: name,
-      });
-      notification.success({
-        message: "THÀNH CÔNG",
-        description: "Xóa học phần thành công",
-      });
-    } catch (error) {
-      console.error(error);
-      notification.error({
-        message: "THẤT BẠI",
-        description: (error as any).message,
-      });
-    } finally {
-      getDetailFolder();
-    }
-  };
-
-  return (
+    return (
     <SC.Wrapper>
       <DrawerSourse
         openDrawer={openDrawer}
         setOpenDrawer={setOpenDrawer}
         getDetailFolder={getDetailFolder}
+        courseDetail={null}
       />
 
       <DrawerFolder
@@ -181,28 +159,29 @@ export const Folder = () => {
                     >
                       <Card
                         style={{ minWidth: 300, cursor: "pointer" }}
-                        actions={[
-                          <EditOutlined key="edit" />,
-                          <DeleteOutlined
-                            key="delete"
-                            onClick={() => {
-                              Modal.confirm({
-                                title: "Xác nhận xóa?",
-                                width: 500,
-                                centered: true,
-                                content: <>{item.name}</>,
-                                okType: "danger",
-                                onOk: () => deleteSourse(item._id, item.name),
-                                footer: (_, { OkBtn, CancelBtn }) => (
-                                  <>
-                                    <CancelBtn />
-                                    <OkBtn />
-                                  </>
-                                ),
-                              });
-                            }}
-                          />,
-                        ]}
+                        // actions={[
+                        //   <EditOutlined key="edit"
+                        //   onClick={()=>updateCourse(item)} />,
+                        //   <DeleteOutlined
+                        //     key="delete"
+                        //     onClick={() => {
+                        //       Modal.confirm({
+                        //         title: "Xác nhận xóa?",
+                        //         width: 500,
+                        //         centered: true,
+                        //         content: <>{item.name}</>,
+                        //         okType: "danger",
+                        //         onOk: () => deleteSourse(item._id, item.name),
+                        //         footer: (_, { OkBtn, CancelBtn }) => (
+                        //           <>
+                        //             <CancelBtn />
+                        //             <OkBtn />
+                        //           </>
+                        //         ),
+                        //       });
+                        //     }}
+                        //   />,
+                        // ]}
                       >
                         <div
                           onClick={() => {

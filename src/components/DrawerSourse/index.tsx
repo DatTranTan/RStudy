@@ -1,67 +1,89 @@
-import { DeleteOutlined, EditOutlined, SoundOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Card,
-  Drawer,
-  Form,
-  Input,
-  List,
-  notification,
-  Select,
-  Space,
-} from "antd";
-import { useEffect, useRef, useState } from "react";
+import type { FormProps } from "antd";
+import { Button, Drawer, Form, Input, notification, Select, Space } from "antd";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Api from "../../api";
+import { ROUTES_PATH } from "../../constants/routers";
 import { CourseType, WordType } from "../../types";
 import * as SC from "./styled";
-import Api from "../../api";
-import type { FormProps } from "antd";
-import { useSearchParams } from "react-router-dom";
 
 type DrawerSourseType = {
   openDrawer: boolean;
   setOpenDrawer: (value: boolean) => void;
-  getDetailFolder: () => void;
+  courseDetail: CourseType | null;
+  getDetailFolder?: () => void;
+  getDetailCourse?: () => void;
 };
 
 export const DrawerSourse = ({
   openDrawer,
   setOpenDrawer,
+  courseDetail,
   getDetailFolder,
+  getDetailCourse,
 }: DrawerSourseType) => {
   const [count, setCount] = useState<number>(0);
   const [words, setWords] = useState<WordType[] | []>([]);
   const [searchParams] = useSearchParams();
-  const folderId = searchParams.get("id");
   const [form] = Form.useForm();
+  const action = searchParams.get("action");
+  const folderId = searchParams.get("id");
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (openDrawer) getWords();
   }, [openDrawer]);
 
+  useEffect(() => {
+    console.log(courseDetail);
+
+    if (courseDetail?.words && action === "update") {
+      const wordIds = courseDetail.words.map((word: any) => word._id);
+
+      form.setFieldsValue({
+        name: courseDetail?.name,
+        wordIds: wordIds,
+      });
+    }
+  }, [courseDetail, action]);
+
   const onFinish: FormProps<CourseType>["onFinish"] = async (values) => {
     try {
-      if (folderId && values.name && values.wordIds) {
-        const payload = { ...values, folderId };
+      console.log(values);
 
-        const { data } = await Api.createCourse(payload);
-        // await Api.createFolder(values);
+      if (
+        pathname === ROUTES_PATH.COURSE &&
+        action === "update" &&
+        courseDetail
+      ) {
+        const payloadUpdate = { ...values, id: courseDetail._id };
 
-        await onClose();
-        console.log(values, data);
-        await form.resetFields();
+        await Api.updateCourse(payloadUpdate);
         await notification.success({
           message: "THÀNH CÔNG",
-          description: "Thêm học phần thành công",
+          description: "Cập nhật học phần thành công",
         });
       }
+
+      if (pathname === ROUTES_PATH.FOLDER && folderId) {
+        const payloadCreate = { ...values, folderId: folderId };
+        await Api.createCourse(payloadCreate);
+        await notification.success({
+          message: "THÀNH CÔNG",
+          description: "Thêm mới học phần thành công",
+        });
+      }
+
+      await form.resetFields();
+
+      await onClose();
     } catch (error) {
       console.log(error);
       await notification.error({
         message: "LỖI",
         description: "Xảy ra lỗi khi thêm học phần",
       });
-    } finally {
-      getDetailFolder();
     }
   };
 
@@ -73,7 +95,7 @@ export const DrawerSourse = ({
 
   const getWords = async () => {
     try {
-      const { data } = await Api.getWords();
+      const { data } = await Api.getWords({});
       const updatedData = data.map((item: WordType) => ({
         ...item,
         value: item._id,
@@ -85,8 +107,23 @@ export const DrawerSourse = ({
     }
   };
 
-  const onClose = () => {
+  const onClose = async () => {
     setOpenDrawer(false);
+    if (
+      pathname === ROUTES_PATH.COURSE &&
+      action === "update" &&
+      getDetailCourse
+    ) {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.delete("action");
+      await navigate(`${location.pathname}?${searchParams.toString()}`);
+      await getDetailCourse();
+    }
+
+    if (pathname === ROUTES_PATH.FOLDER && getDetailFolder) {
+      await navigate(`${ROUTES_PATH.FOLDER}?id=${folderId}`);
+      await getDetailFolder();
+    }
   };
 
   const handleChange = (value: string[]) => {
@@ -104,9 +141,9 @@ export const DrawerSourse = ({
         open={openDrawer}
         extra={
           <Space>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>Hủy</Button>
             <Button type="primary" htmlType="submit" form="input-course">
-              OK
+              Đồng ý
             </Button>
           </Space>
         }
@@ -117,7 +154,6 @@ export const DrawerSourse = ({
           layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          // autoComplete="off"
         >
           <Form.Item<CourseType>
             label="Nhập tên học phần"
@@ -135,9 +171,7 @@ export const DrawerSourse = ({
             <Select
               size="large"
               mode="multiple"
-              // style={{ width: '100%' }}
               placeholder="Tìm kiếm để chọn"
-              // defaultValue={['china']}
               onChange={handleChange}
               options={words}
               labelRender={(label) => (

@@ -73,7 +73,7 @@ export const HorizontalCard = ({
                 title: "Xác nhận xóa?",
                 width: 500,
                 centered: true,
-                content: <>{folderDetail.name}</>,
+                content: folderDetail.name,
                 okType: "danger",
                 onOk: deleteFolder,
                 // onOk: () => {

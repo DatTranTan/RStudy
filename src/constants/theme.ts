@@ -1,5 +1,5 @@
 export const color = {
-  default: "#079DD9",
+  default: "#364d79",
   titleText: "#2e2e2e",
   subtitleText: "#6d7983",
   descriptionText: "#9ca4aa",

@@ -13,7 +13,7 @@ import * as SC from "./styled";
 import dayjs from "dayjs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DrawerFolder } from "../../components/DrawerFolder";
-import { DrawerSourse } from "../../components/DrawerSourse";
+import { DrawerCourse } from "../../components/DrawerCourse";
 import { HorizontalCard } from "../../components/HorizontalCard";
 import { ROUTES_PATH } from "../../constants/routers";
 import { setTitleHeader, useContextController } from "../../context/context";
@@ -66,7 +66,7 @@ export const Folder = () => {
 
     return (
     <SC.Wrapper>
-      <DrawerSourse
+      <DrawerCourse
         openDrawer={openDrawer}
         setOpenDrawer={setOpenDrawer}
         getDetailFolder={getDetailFolder}

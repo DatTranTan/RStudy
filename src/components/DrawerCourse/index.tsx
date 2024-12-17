@@ -7,7 +7,7 @@ import { ROUTES_PATH } from "../../constants/routers";
 import { CourseType, WordType } from "../../types";
 import * as SC from "./styled";
 
-type DrawerSourseType = {
+type DrawerCourseType = {
   openDrawer: boolean;
   setOpenDrawer: (value: boolean) => void;
   courseDetail: CourseType | null;
@@ -15,13 +15,13 @@ type DrawerSourseType = {
   getDetailCourse?: () => void;
 };
 
-export const DrawerSourse = ({
+export const DrawerCourse = ({
   openDrawer,
   setOpenDrawer,
   courseDetail,
   getDetailFolder,
   getDetailCourse,
-}: DrawerSourseType) => {
+}: DrawerCourseType) => {
   const [count, setCount] = useState<number>(0);
   const [words, setWords] = useState<WordType[] | []>([]);
   const [searchParams] = useSearchParams();
@@ -95,13 +95,15 @@ export const DrawerSourse = ({
 
   const getWords = async () => {
     try {
-      const { data } = await Api.getWords({});
-      const updatedData = data.map((item: WordType) => ({
-        ...item,
-        value: item._id,
-        label: `${item.word} - ${item.meaning}`,
-      }));
-      await setWords(updatedData);
+      if (courseDetail?._id) {
+        const { data } = await Api.getWordsAvailable({}, courseDetail._id);
+        const updatedData = data.map((item: WordType) => ({
+          ...item,
+          value: item._id,
+          label: `${item.word} - ${item.meaning}`,
+        }));
+        await setWords(updatedData);
+      }
     } catch (error) {
       console.error(error);
     }

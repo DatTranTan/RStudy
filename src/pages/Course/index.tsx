@@ -12,7 +12,7 @@ import icon_flashcard from "../../assets/icon_flashcard.png";
 import icon_game from "../../assets/icon_game.png";
 import icon_learn from "../../assets/icon_learn.png";
 import icon_test from "../../assets/icon_test.png";
-import { DrawerSourse } from "../../components/DrawerSourse";
+import { DrawerCourse } from "../../components/DrawerCourse";
 import { FlipCard } from "../../components/FlipCard";
 import { VerticalCard } from "../../components/VerticalCard";
 import { ROUTES_PATH } from "../../constants/routers";
@@ -85,7 +85,7 @@ export const Course = () => {
 
   return (
     <SC.Wrapper>
-      <DrawerSourse
+      <DrawerCourse
         openDrawer={openDrawer}
         setOpenDrawer={setOpenDrawer}
         courseDetail={course}

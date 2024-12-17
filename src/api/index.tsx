@@ -47,6 +47,21 @@ const getWords = async (params: { topic?: string; search?: string }) => {
   return result;
 };
 
+const getWordsAvailable = async (
+  params: { topic?: string; search?: string },
+  courseId: string
+) => {
+  const url = `word/available `;
+  const result = await axiosClient.post(
+    url,
+    { courseId },
+    {
+      params: params,
+    }
+  );
+  return result;
+};
+
 const createWord = async (data: WordType) => {
   const url = `word`;
   const result = await axiosClient.post(url, { ...data });
@@ -142,6 +157,7 @@ const Api = {
   createCourse,
   deleteCourse,
   updateCourse,
-  deleteAllWord
+  deleteAllWord,
+  getWordsAvailable,
 };
 export default Api;

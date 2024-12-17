@@ -76,10 +76,6 @@ export const HorizontalCard = ({
                 content: folderDetail.name,
                 okType: "danger",
                 onOk: deleteFolder,
-                // onOk: () => {
-                //   if (folderDetail._id && folderDetail.name)
-                //     deleteFolder(folderDetail._id, folderDetail.name);
-                // },
                 footer: (_, { OkBtn, CancelBtn }) => (
                   <>
                     <CancelBtn />

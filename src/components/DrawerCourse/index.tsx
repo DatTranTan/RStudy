@@ -23,6 +23,7 @@ export const DrawerCourse = ({
   getDetailCourse,
 }: DrawerCourseType) => {
   const [count, setCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
   const [words, setWords] = useState<WordType[] | []>([]);
   const [searchParams] = useSearchParams();
   const [form] = Form.useForm();
@@ -50,8 +51,7 @@ export const DrawerCourse = ({
 
   const onFinish: FormProps<CourseType>["onFinish"] = async (values) => {
     try {
-      console.log(values);
-
+      setLoading(true);
       if (
         pathname === ROUTES_PATH.COURSE &&
         action === "update" &&
@@ -76,7 +76,7 @@ export const DrawerCourse = ({
       }
 
       await form.resetFields();
-
+      await setLoading(false);
       await onClose();
     } catch (error) {
       console.log(error);
@@ -84,6 +84,7 @@ export const DrawerCourse = ({
         message: "LỖI",
         description: "Xảy ra lỗi khi thêm học phần",
       });
+      await setLoading(false);
     }
   };
 
@@ -142,7 +143,12 @@ export const DrawerCourse = ({
         extra={
           <Space>
             <Button onClick={onClose}>Hủy</Button>
-            <Button type="primary" htmlType="submit" form="input-course">
+            <Button
+              type="primary"
+              htmlType="submit"
+              form="input-course"
+              loading={loading}
+            >
               Đồng ý
             </Button>
           </Space>

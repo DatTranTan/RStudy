@@ -122,11 +122,16 @@ export const VerticalCard = ({
         // title={`${word} ${phonetic}`}
       >
         <Meta
-          style={{
-            visibility: flip ? "visible" : "hidden",
-          }}
           // avatar={<Avatar src={image} />}
-          title={wordDetail.meaning}
+          title={
+            <div
+              style={{
+                visibility: flip ? "visible" : "hidden",
+              }}
+            >
+              {wordDetail.meaning}
+            </div>
+          }
           description={
             <>
               <div>{wordDetail.exEnglish}</div> <i>{wordDetail.exVietnamese}</i>

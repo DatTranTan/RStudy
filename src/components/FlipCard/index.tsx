@@ -1,14 +1,10 @@
 import { DeleteOutlined, EditOutlined, SoundOutlined } from "@ant-design/icons";
-import { Card, List } from "antd";
-import { useRef, useState } from "react";
-import { WordType } from "../../types";
+import { List } from "antd";
+import { useRef } from "react";
 import * as SC from "./styled";
-
-const { Meta } = Card;
 
 export const FlipCard = ({ wordDetail }: any) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isFlip, setIsFlip] = useState<boolean>(false);
 
   const playAudio = () => {
     if (audioRef.current) {

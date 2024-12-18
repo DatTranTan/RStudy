@@ -6,13 +6,10 @@ import {
   useMemo,
   useReducer,
 } from "react";
-import { CollectionsType } from "../types";
 import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
+  isMobile
 } from "react-device-detect";
+import { CollectionsType } from "../types";
 
 const Context = createContext<GlobalContext | null>(null);
 
@@ -123,11 +120,5 @@ const setTitleHeader = (
 ) => dispatch({ type: "TITLE_HEADER", value });
 
 export {
-  ContextProvider,
-  useContextController,
-  setCollections,
-  setCollapsedSider,
-  setSearchText,
-  setDocumentId,
-  setTitleHeader,
+  ContextProvider, setCollapsedSider, setCollections, setDocumentId, setSearchText, setTitleHeader, useContextController
 };

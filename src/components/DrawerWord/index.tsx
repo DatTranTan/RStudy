@@ -14,9 +14,9 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../../api";
 import { ROUTES_PATH } from "../../constants/routers";
-import { FolderType, WordType } from "../../types";
-import * as SC from "./styled";
 import { topicWord } from "../../constants/topicWord";
+import { WordType } from "../../types";
+import * as SC from "./styled";
 
 type FieldType = {
   inputWords: string;

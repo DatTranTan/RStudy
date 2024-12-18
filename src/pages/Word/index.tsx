@@ -7,34 +7,25 @@ import {
 import {
   Button,
   Col,
-  Drawer,
   Empty,
-  Form,
-  Input,
   Modal,
   notification,
   Row,
   Select,
-  Space,
   Table,
 } from "antd";
 import { useEffect, useState } from "react";
+import { isBrowser } from "react-device-detect";
 import Api from "../../api";
 import { VerticalCard } from "../../components/VerticalCard";
 import { WordType } from "../../types";
 import * as SC from "./styled";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
 
-import type { FormProps, TableColumnsType, TablePaginationConfig } from "antd";
-import { topicWord } from "../../constants/topicWord";
+import type { TableColumnsType, TablePaginationConfig } from "antd";
+import { useNavigate } from "react-router-dom";
 import { DrawerWord } from "../../components/DrawerWord";
 import { ROUTES_PATH } from "../../constants/routers";
-import { useNavigate } from "react-router-dom";
+import { topicWord } from "../../constants/topicWord";
 
 export const Word = () => {
   // const { controller, dispatch } = useContextController();
@@ -53,6 +44,7 @@ export const Word = () => {
 
   useEffect(() => {
     getWords(topic, search);
+    setSearch("");
   }, [topic, search]);
 
   const getWords = async (topic: string, search: string) => {

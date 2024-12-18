@@ -1,9 +1,7 @@
-import { Button, Card, Col, Empty, Form, Modal, notification, Row } from "antd";
+import { Button, Card, Col, Empty, Row } from "antd";
 
 import {
-  ArrowLeftOutlined,
-  DeleteOutlined,
-  EditOutlined,
+  ArrowLeftOutlined
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import Api from "../../api";
@@ -11,13 +9,13 @@ import { FolderType } from "../../types";
 import * as SC from "./styled";
 
 import dayjs from "dayjs";
+import { MobileView } from "react-device-detect";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { DrawerFolder } from "../../components/DrawerFolder";
 import { DrawerCourse } from "../../components/DrawerCourse";
+import { DrawerFolder } from "../../components/DrawerFolder";
 import { HorizontalCard } from "../../components/HorizontalCard";
 import { ROUTES_PATH } from "../../constants/routers";
 import { setTitleHeader, useContextController } from "../../context/context";
-import { MobileView } from "react-device-detect";
 const { Meta } = Card;
 
 export const Folder = () => {

@@ -7,8 +7,8 @@ import { Navigate } from "react-router-dom";
 import { ROUTES_PATH } from "../constants/routers";
 
 const axiosClient = axios.create({
-  // baseURL: import.meta.env.VITE_API_URL,
-  baseURL: "http://localhost:3167/",
+  baseURL: import.meta.env.VITE_API_URL,
+  // baseURL: "http://localhost:3167/",
   headers: {
     "content-type": "application/json",
   },

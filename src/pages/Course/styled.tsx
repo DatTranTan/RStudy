@@ -1,10 +1,7 @@
-import styled from "styled-components";
 import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
+  isMobile
 } from "react-device-detect";
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   .wrapper-action {

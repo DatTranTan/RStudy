@@ -1,11 +1,17 @@
-import { DeleteOutlined, EditOutlined, SoundOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  SoundOutlined,
+} from "@ant-design/icons";
 import { Card } from "antd";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import LazyLoad from "react-lazy-load";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTES_PATH } from "../../constants/routers";
 import { WordType } from "../../types";
 import * as SC from "./styled";
-import { useNavigate } from "react-router-dom";
-import { ROUTES_PATH } from "../../constants/routers";
 
 const { Meta } = Card;
 
@@ -13,18 +19,19 @@ type VerticalCardType = {
   wordDetail: WordType;
   setOpen?: (value: boolean) => void;
   deleteWord?: (_id: string, word: string) => void;
-  setWordUpdate?:(word:WordType)=>void;
-
+  setWordUpdate?: (word: WordType) => void;
 };
 
 export const VerticalCard = ({
   wordDetail,
   setOpen,
   deleteWord,
-  setWordUpdate
+  setWordUpdate,
 }: VerticalCardType) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [flip, setFlip] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -66,14 +73,36 @@ export const VerticalCard = ({
           </div>
         }
         actions={[
+          ...(pathname === ROUTES_PATH.COURSE
+            ? [
+                flip ? (
+                  <EyeInvisibleOutlined
+                    key="eyeinvisible"
+                    onClick={() => {
+                      setFlip(false);
+                    }}
+                  />
+                ) : (
+                  <EyeOutlined
+                    key="eye"
+                    onClick={() => {
+                      setFlip(true);
+                    }}
+                  />
+                ),
+              ]
+            : []),
           <SoundOutlined key="sound" onClick={playAudio} />,
           ...(setOpen
             ? [
-              <EditOutlined key="edit" onClick={async () => {
-                if (setWordUpdate) await setWordUpdate(wordDetail)
-                await navigate(`${ROUTES_PATH.WORD}?action=update`);
-                await setOpen(true);
-              }} />,
+                <EditOutlined
+                  key="edit"
+                  onClick={async () => {
+                    if (setWordUpdate) await setWordUpdate(wordDetail);
+                    await navigate(`${ROUTES_PATH.WORD}?action=update`);
+                    await setOpen(true);
+                  }}
+                />,
               ]
             : []),
           ...(deleteWord
@@ -93,6 +122,9 @@ export const VerticalCard = ({
         // title={`${word} ${phonetic}`}
       >
         <Meta
+          style={{
+            visibility: flip ? "visible" : "hidden",
+          }}
           // avatar={<Avatar src={image} />}
           title={wordDetail.meaning}
           description={

@@ -95,15 +95,13 @@ export const DrawerCourse = ({
 
   const getWords = async () => {
     try {
-      if (courseDetail?._id) {
-        const { data } = await Api.getWordsAvailable({}, courseDetail._id);
-        const updatedData = data.map((item: WordType) => ({
-          ...item,
-          value: item._id,
-          label: `${item.word} - ${item.meaning}`,
-        }));
-        await setWords(updatedData);
-      }
+      const { data } = await Api.getWordsAvailable({}, courseDetail?._id);
+      const updatedData = data.map((item: WordType) => ({
+        ...item,
+        value: item._id,
+        label: `${item.word} - ${item.meaning}`,
+      }));
+      await setWords(updatedData);
     } catch (error) {
       console.error(error);
     }

@@ -49,7 +49,7 @@ const getWords = async (params: { topic?: string; search?: string }) => {
 
 const getWordsAvailable = async (
   params: { topic?: string; search?: string },
-  courseId: string
+  courseId?: string
 ) => {
   const url = `word/available `;
   const result = await axiosClient.post(

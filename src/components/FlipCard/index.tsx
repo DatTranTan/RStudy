@@ -42,14 +42,19 @@ export const FlipCard = ({ wordDetail }: any) => {
                   }}
                 >
                   {wordDetail.phonetic}
-                </span>
+                </span>{" "}
+                ({wordDetail.type})
               </div>
-              <div>{wordDetail.meaning}</div>
+              {/* <div>{wordDetail.meaning}</div> */}
             </>
           }
-          description={wordDetail.type}
+          description={
+            <div style={{ color: "#ff0000", fontWeight: "700" }}>
+              {wordDetail.meaning}
+            </div>
+          }
         />
-        <div>{wordDetail.exEnglish}</div>
+        <div style={{ color: "#002bff" }}>{wordDetail.exEnglish}</div>
         <div>{wordDetail.exVietnamese}</div>
       </List.Item>
     </SC.Wrapper>

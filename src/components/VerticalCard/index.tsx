@@ -134,7 +134,8 @@ export const VerticalCard = ({
           }
           description={
             <>
-              <div>{wordDetail.exEnglish}</div> <i>{wordDetail.exVietnamese}</i>
+              <div style={{ color: "#002bff" }}>{wordDetail.exEnglish}</div>{" "}
+              <i>{wordDetail.exVietnamese}</i>
             </>
           }
         />

@@ -6,7 +6,7 @@ import {
   SoundOutlined,
 } from "@ant-design/icons";
 import { Card } from "antd";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LazyLoad from "react-lazy-load";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "../../constants/routers";
@@ -38,6 +38,12 @@ export const VerticalCard = ({
       audioRef.current.play();
     }
   };
+
+  useEffect(() => {
+    if (pathname.includes("word")) {
+      setFlip(true);
+    }
+  }, [pathname]);
 
   return (
     <SC.Wrapper>
